@@ -1,0 +1,7 @@
+---
+applications:
+- name: howdy-reactor
+  memory: 1G
+  host: howdy-reactor
+  buildpack: java_buildpack
+  path: target/reactor-fu-0.0.1-SNAPSHOT.jar

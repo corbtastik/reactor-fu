@@ -1,6 +1,5 @@
 package io.corbs.stocks;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,8 +10,7 @@ import java.util.List;
 @Configuration
 public class QuoteAppContext {
 
-    @Value("${stocks.file}")
-    private String stocksFile;
+    private String stocksFile = "/stocks.json";
 
     @Bean
     public QuoteRouter quoteRouter() {
@@ -26,13 +24,15 @@ public class QuoteAppContext {
 
     @Bean
     public QuoteStream quoteStream() throws IOException {
-        List<Stock> stocks = IO.readJSONStocks(new File(stocksFile));
+        File file = new File(getClass().getResource(stocksFile).getFile());
+        List<Stock> stocks = IO.readJSONStocks(file);
         return new QuoteStream(stocks);
     }
 
     @Bean
     public Stocks stocks() throws IOException {
-        return Stocks.create(IO.readJSONStocks(new File(stocksFile)));
+        File file = new File(getClass().getResource(stocksFile).getFile());
+        return Stocks.create(IO.readJSONStocks(file));
     }
 
 }
